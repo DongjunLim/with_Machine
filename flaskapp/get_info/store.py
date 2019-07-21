@@ -1,8 +1,8 @@
 
 class Store(object):
-    def __init__(self,name,address_components,icon,rating,reviews,types):
+    def __init__(self,name,formatted_address,icon,rating,reviews,types):
         self.__name = name
-        self.__address = address_components
+        self.__address = formatted_address
         self.__icon = icon
         self.__rating = rating
         self.__reviews = reviews
@@ -20,37 +20,6 @@ class Store(object):
         return self.__reviews
     def get_types(self):
         return self.__types
-
-class Address(object):
-    def __init__(self,floor,street_number,route,locality,admin_area_lv_2,
-            admin_area_lv_1,country,postal_code):
-        self.__floor = floor
-        self.__street_number = street_number
-        self.__route = route
-        self.__locality = locality
-        self.__admin_area_lv_2 = admin_area_lv_2
-        self.__admin_area_lv_1 = admin_area_lv_1
-        self.__country = country
-        self.__postal_code = postal_code
-
-    def get_floor(self):
-        return self.__floor
-    def get_street_number(self):
-        return self.__street_number
-    def get_route(self):
-        return self.__route
-    def get_locality(self):
-        return self.__locality
-    def get_admin_area_lv_2(self):
-        return self.__admin_area_lv_2
-    def get_admin_area_lv_1(self):
-        return self.__admin_area_lv_1
-    def get_country(self):
-        return self.__country
-    def get_postal_code(self):
-        return self.__postal_code
-
-
 
 class Review(object):
     def __init__(self):
