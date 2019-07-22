@@ -1,6 +1,6 @@
 from store import Store
 import requests
-
+import convert_keyword
 
 __API_KEY = None
 
@@ -19,7 +19,7 @@ def search_url(key, name):
 
 def detail_url(key, place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json?"
-    url += "key={:s}&place_id{:s}".format(key,place_id)
+    url += "key={:s}&placeid={:s}".format(key,place_id)
     url += "&fields=name,formatted_address,icon,review,price_level,user_ratings_total,international_phone_number,photo,type"
     return url
 
