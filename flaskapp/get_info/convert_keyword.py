@@ -7,5 +7,6 @@ def get_address(api_key,lat,lng):
     return formatted_address
 
 
-def get_keyword(name,address):
+def get_keyword(name,lat,lng,api_key):
+    address = get_address(api_key,lat,lng)
     return address + " " + name

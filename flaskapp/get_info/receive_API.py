@@ -1,9 +1,8 @@
-from store import Store
+from flaskapp.get_info import convert_keyword as ck
 import requests
-import convert_keyword
+#from flaskapp.get_info import convert_keyword
 
 __API_KEY = None
-
 
 def load_api_key(path):
     with open(path, mode='r') as f:
@@ -42,13 +41,8 @@ def get_detail(api_key,place_id):
     detail_info = response.json()
     return detail_info
 
-API = "AIzaSyCZEaWbS8jDp_iQEIpdHy4BZQxYcTN1hp8"
-
-place_id = get_place_id(API, "대한민국 서울특별시 중구 태평로1가 세종대로 110 스타벅스")
-#place_detail = get_detail(API,place_id['place_id'])
-
-
-print(place_id)
-detail = get_detail(API, place_id)
-print(detail)
-
+def get_place_info(name,lat,lng,api_key):
+    keyword = ck.get_keyword(name,lat,lng,api_key)
+    place_id = get_place_id(api_key,keyword)
+    detail = get_detail(api_key,place_id)
+    return detail
