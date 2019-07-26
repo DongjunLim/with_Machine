@@ -12,7 +12,7 @@ from .get_info import receive_API as ra
 app = Flask(__name__)
 
 __API_KEY = None
-with open("api_key.txt",mode='r') as f:
+with open("../api_key.txt",mode='r') as f:
     __API_KEY = f.read()
 
 @app.route("/")
