@@ -1,6 +1,5 @@
 from flaskapp.get_info import convert_keyword as ck
 import requests
-#from flaskapp.get_info import convert_keyword
 
 __API_KEY = None
 
@@ -26,13 +25,14 @@ def get_place_id(api_key, keyword):
 
     response = requests.get(url=search_url(api_key,keyword))
 
-    #if not response[1]:
-    #    return None, False
-    
-    #if response[0]['status']!='OK':
-    #    return None, False
-
     place_info = response.json()
+
+    if not place_info['candidates']:
+        return False
+
+    if place_info['status']!='OK':
+        return False
+
     candidate = place_info['candidates'][0]
     return candidate['place_id']
 
@@ -44,5 +44,11 @@ def get_detail(api_key,place_id):
 def get_place_info(name,lat,lng,api_key):
     keyword = ck.get_keyword(name,lat,lng,api_key)
     place_id = get_place_id(api_key,keyword)
+
+    if(place_id == False):
+        return {"store_name":"Not Found",
+                "gps_lat": 0,
+                "gps_lon":0}
+
     detail = get_detail(api_key,place_id)
     return detail

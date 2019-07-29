@@ -22,8 +22,6 @@ def helloworld():
 
 @app.route("/data",methods=['POST'])
 def receive():
-    #req_json =  {request.form['store_name'],request.form['gps_lat'],request.form['gps_lon']}
-    #req_json = request.get_json()
     global __API_KEY
     req_json = request.json
     print(req_json)
@@ -36,13 +34,5 @@ def receive():
 
 
     
-    #print(req_json)
-    #store_info = cb.combine_info(request.form['store_name'],request.form['gps_location'])
-    #datas = sd.convert_json(store_info)
-
-    #store = Store("starbucks","시흥시 대야동","ICON","4.5","맛있어요","cafe")
-    #datas = sd.convert_json(store)
-   # body = req_json.json()
     
-    return req_json
 
