@@ -1,0 +1,46 @@
+import pandas as pd
+import json
+pd.set_option('display.max_colwidth', -1)
+
+class csv_data:
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+    def make_list(lines):
+        b=lines.replace("[[","").replace("]]","")
+        matrixAr = []
+        for line in b.split('], ['):
+            line = line.replace("'", "")
+            if(line.split(',')):
+                row =list(map(str,line.split(',')))
+            else:
+                row = list(line)
+            matrixAr.append(row)
+        #print("mat[0]" ,matrixAr[0])
+        return matrixAr
+
+    def __init__(self, name='De Silveren Spiegel'):
+        data_frame = pd.read_csv("/home/ubuntu/webapp/flaskapp/get_info/TA_restaurants_curated.csv", )
+        # Name ì»¬ëŸ¼?ì„œ ê°€ê²??´ë¦„??ê²€??(data_row ?€??
+        value = data_frame.loc[data_frame['Name'].str.contains(name)]
+
+       #self.city = value['City'].to_string(index=False)
+        self.type =  csv_data.make_list(value['Cuisine Style'].to_string(index=False))
+        #self.rank = value['Ranking'].to_string(index=False)
+        #self.rating = value['Rating'].to_string(index=False)
+        self.Prank = value['Price Range'].to_string(index=False)
+        self.reviews =  csv_data.make_list(value['Reviews'].to_string(index=False))[:-1]
+        # print("self.type = ", self.reviews[0])
+        
+
+        # csv?ì„œ ?¹ì • ??? íƒ ?? ê·??‰ì—???„ìš”???°ì´?°ë§Œ ì¶”ì¶œ
+# result = csv_data()
+# print(result.toJSON())
+
+# ?„ìš”??ë¦¬ë·°ë§?ì¶”ì¶œ
+
+
+
+
+

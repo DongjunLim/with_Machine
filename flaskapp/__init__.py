@@ -2,12 +2,7 @@ import sys
 sys.path.insert(0, '~/webapp/flaskapp/get_info')
 from flask import Flask
 from flask import request
-
-#from .get_info import store
 from .get_info import receive_API as ra
-#from flaskapp.get_info,combine as cb
-#from flaskapp import send_data as sd
-#from flaskapp.get_info import receive_API
 
 app = Flask(__name__)
 

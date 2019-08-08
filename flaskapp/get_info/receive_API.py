@@ -1,5 +1,6 @@
 from flaskapp.get_info import convert_keyword as ck
 import requests
+from flaskapp.get_info import csv_data as csv
 
 __API_KEY = None
 
@@ -17,7 +18,7 @@ def search_url(key, name):
 
 def detail_url(key, place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json?"
-    url += "key={:s}&placeid={:s}".format(key,place_id)
+    url += "key={:s}&language=en&placeid={:s}".format(key,place_id)
     url += "&fields=name,formatted_address,icon,review,price_level,user_ratings_total,international_phone_number,photo,type"
     return url
 
@@ -39,12 +40,14 @@ def get_place_id(api_key, keyword):
 def get_detail(api_key,place_id):
     response = requests.get(url=detail_url(api_key,place_id))
     detail_info = response.json()
+    #csv_info = csv.csv_data().toJSON()
+    #info = {key: value for (key, value) in (detail_info.items() + csv_info.items())}
     return detail_info
 
 def get_place_info(name,lat,lng,api_key):
     keyword = ck.get_keyword(name,lat,lng,api_key)
     place_id = get_place_id(api_key,keyword)
-
+    print(keyword)
     if(place_id == False):
         return {"store_name":"Not Found",
                 "gps_lat": 0,

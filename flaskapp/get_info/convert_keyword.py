@@ -9,4 +9,4 @@ def get_address(api_key,lat,lng):
 
 def get_keyword(name,lat,lng,api_key):
     address = get_address(api_key,lat,lng)
-    return address + " " + name
+    return address + " 주변 " + name
