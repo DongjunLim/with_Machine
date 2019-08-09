@@ -5,8 +5,9 @@ pd.set_option('display.max_colwidth', -1)
 class csv_data:
 
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True, indent=4)
+        return self.__dict__
+        #return json.dumps(self, default=lambda o: o.__dict__,
+         #                 sort_keys=True, indent=4)
     def make_list(lines):
         b=lines.replace("[[","").replace("]]","")
         matrixAr = []
@@ -20,17 +21,17 @@ class csv_data:
         #print("mat[0]" ,matrixAr[0])
         return matrixAr
 
-    def __init__(self, name='De Silveren Spiegel'):
+    def __init__(self, name):
         data_frame = pd.read_csv("/home/ubuntu/webapp/flaskapp/get_info/TA_restaurants_curated.csv", )
         # Name Ïª¨Îüº?êÏÑú Í∞ÄÍ≤??¥Î¶Ñ??Í≤Ä??(data_row ?Ä??
         value = data_frame.loc[data_frame['Name'].str.contains(name)]
 
        #self.city = value['City'].to_string(index=False)
-        self.type =  csv_data.make_list(value['Cuisine Style'].to_string(index=False))
+        self.csv_type = value['Cuisine Style'].to_string(index=False)[2:-1]
         #self.rank = value['Ranking'].to_string(index=False)
-        #self.rating = value['Rating'].to_string(index=False)
-        self.Prank = value['Price Range'].to_string(index=False)
-        self.reviews =  csv_data.make_list(value['Reviews'].to_string(index=False))[:-1]
+        self.csv_rating = value['Rating'].to_string(index=False)
+        self.csv_Prank = value['Price Range'].to_string(index=False)
+        self.csv_reviews =  csv_data.make_list(value['Reviews'].to_string(index=False))[0]
         # print("self.type = ", self.reviews[0])
         
 
