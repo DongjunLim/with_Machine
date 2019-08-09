@@ -19,7 +19,7 @@ def search_url(key, name):
 def detail_url(key, place_id):
     url = "https://maps.googleapis.com/maps/api/place/details/json?"
     url += "key={:s}&language=en&placeid={:s}".format(key,place_id)
-    url += "&fields=name,formatted_address,icon,review,price_level,user_ratings_total,international_phone_number,photo,type"
+    url += "&fields=name,formatted_address,icon,rating,review,price_level,user_ratings_total,international_phone_number,photo,type"
     return url
 
 def get_place_id(api_key, keyword):
