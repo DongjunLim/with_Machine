@@ -1,33 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_test"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="36dp"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:id="@+id/detection_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="TextView" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/backgroundlayout">
+        ​
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv"/>
-    </ScrollView>
+            android:id="@+id/test1"/>
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            class="androidx.viewpager.widget.ViewPager"
+            android:id="@+id/view" />
+        <TextView
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:id="@+id/name"/>
+        <RatingBar
+            android:layout_margin="3dp"
+            android:id="@+id/rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="3.5"
+            android:stepSize="0.5">
+        </RatingBar>
+        <TextView
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:id="@+id/formatted_address"/>
+        <TextView
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:id="@+id/price_level"/>
+        <TextView
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textSize="15dp"
+            android:id="@+id/phone"/>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="3dp"
+            android:hint="모든 리뷰"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/scrollView2">
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="#d5d7d9"
+                android:textSize="15dp" />
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="3dp"
+            android:text="연관매장"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="3dp"
+            android:textAlignment="center"
+            android:background="#d5d7d9"
+            android:textSize="15dp" />
+        <Button
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:id="@+id/backButton"
+            android:background="@drawable/ic_reply_black_24dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -12,13 +12,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,10 +41,11 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,13 +55,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
-    private ImageView imgMain;
-    private TextView result; // 추가
-    private TextView tv; // 서버에서 받은 내용 표시
+    //private ImageView imgMain;
+    //private TextView result; // 추가
+    //private TextView tv; // 서버에서 받은 내용 표시
+    ImageAdapter adapter;
+    ViewPager viewPager;
+    TextView name, formatted_address, price_level, tv1, text1, phone, test1;
+    LinearLayout layout1;
+    RatingBar rating;
+    Button backButton;
+    ScrollView scrollView1, scrollView2;
     private final String TAG = MainActivity.this.getClass().getSimpleName();
     String api_key = BuildConfig.API_KEY;  //추가
 
@@ -77,9 +90,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.tv);
+        //tv = findViewById(R.id.tv);
+
         checkPermissions();
         initView();
+        scrollView2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    scrollView1.requestDisallowInterceptTouchEvent(false);
+                }
+                else {
+                    scrollView1.requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
         takePhoto();
     }
 
@@ -100,8 +126,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        imgMain = findViewById(R.id.img_test);
-        result = findViewById(R.id.detection_text);
+        //imgMain = findViewById(R.id.img_test);
+        //result = findViewById(R.id.detection_text);
+        viewPager = (ViewPager) findViewById(R.id.view);
+        adapter = new ImageAdapter(this);
+        viewPager.setAdapter(adapter);
+        tv1=(TextView)findViewById(R.id.text1);
+        name=(TextView)findViewById(R.id.name);
+        formatted_address=(TextView)findViewById(R.id.formatted_address);
+        price_level=(TextView)findViewById(R.id.price_level);
+        layout1 = (LinearLayout)findViewById(R.id.backgroundlayout);
+        rating = (RatingBar)findViewById(R.id.rating);
+        text1 = (TextView)findViewById(R.id.text1);
+        test1 = (TextView)findViewById(R.id.test1);
+        phone = (TextView)findViewById(R.id.phone);
+        backButton = (Button)findViewById(R.id.backButton);
+        scrollView1 = (ScrollView)findViewById(R.id.scrollView1);
+        scrollView2 = (ScrollView)findViewById(R.id.scrollView2);
     }
 
     private void takePhoto() {
@@ -187,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             uploadImage(photoUri);
-            imgMain.setImageURI(null);
-            imgMain.setImageURI(photoUri);
+            //imgMain.setImageURI(null);
+            //imgMain.setImageURI(photoUri);
             revokeUriPermission(photoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
     }
@@ -205,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
             intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectX", 2);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
 
@@ -234,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
       // 내가 추가함
     private void callCloudVision(final Bitmap bitmap) {
-
         new AsyncTask<Object, Void, String>() {
             @Override
             protected String doInBackground(Object... params) {
@@ -291,7 +331,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //Log.d(TAG, response);
 
-                result.setText(response);
+                //result.setText("결과 : " + response);
+                test1.setText("추출 텍스트 결과 : "+response);
                 System.out.print("결과:"+response);
                 nameMake(response);
             }
@@ -301,15 +342,15 @@ public class MainActivity extends AppCompatActivity {
     private void nameMake(String response) {
         String re_response = response.toLowerCase();
         re_response = re_response.replace("\n", "").replace("\r", "");
-        double num1 = 37.56621;
-        double num2 = 126.9779;
+        double num1 = 37.491136;
+        double num2 = 127.013838;
         String data = "{"+
                 "\"store_name\"" + ": "+"\"" + re_response + "\","+"\n"+
                 "\"gps_lat\"" + ":" + num1 + ","+
                 "\"gps_lon\"" + ":" + num2 +
                 "}";
-        System.out.print("데이터:"+data);
-        tv.setText(data+"\n\n");
+        System.out.print("서버에 전달되는 데이터 \n"+data);
+        //tv.setText("서버에 전달되는 데이터 \n"+data+"\n\n");
         Submit(data);
     }
 
@@ -322,12 +363,42 @@ public class MainActivity extends AppCompatActivity {
             //통신 성공 시
             @Override
             public void onResponse(String response) {
-
-
+                // json 파싱
                 try {
-                    JSONObject objres = new JSONObject(response);
-                    //Toast.makeText(getApplicationContext(),objres.toString(),Toast.LENGTH_LONG).show();
-                    tv.setText(tv.getText()+objres.toString());
+                    JSONObject object = new JSONObject(response);
+                    // 응답 안 result 태그
+                    String result = object.getString("result");
+                    JSONObject subObject = new JSONObject(result);
+
+                    // result 바로 밑 태그들
+                    String address= subObject.getString("formatted_address");
+                    String storeName = subObject.getString("name");
+                    Double price = subObject.getDouble("price_level");
+                    Double ratingBar = subObject.getDouble("rating");
+                    String phoneNum = subObject.getString("international_phone_number");
+
+                    // result의 reviews 태그 안 내용들
+                    String reviews = subObject.getString("reviews");
+                    JSONArray reviewArray = new JSONArray(reviews);
+
+                    name.setText(storeName);
+                    formatted_address.setText(address);
+                    price_level.setText(price.toString());
+                    rating.setRating(Float.parseFloat(ratingBar.toString()));
+                    phone.setText(phoneNum);
+
+                    for (int i=0; i< reviewArray.length(); i++) {
+                        JSONObject reviewObject = reviewArray.getJSONObject(i);
+                        String authorName = reviewObject.getString("author_name");
+                        String text = reviewObject.getString("text");
+
+                        text1.setText(text1.getText()+authorName + "\n: "+text+"\n");
+
+                    }
+                    System.out.print("매장이름:"+storeName);
+                    System.out.print("가격대:"+price);
+
+
                     System.out.println("성공");
 
 
@@ -421,5 +492,4 @@ public class MainActivity extends AppCompatActivity {
 
         return message;
     }
-
 }
