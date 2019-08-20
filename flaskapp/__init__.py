@@ -37,8 +37,6 @@ with open("../naver_geo_key.txt", mode='r') as f:
 def helloworld():
     return "Hello World!"
 
-
-#??라??언???? ??신??는 부???
 @app.route("/data",methods=['POST'])
 def receive():
 
@@ -56,7 +54,7 @@ def receive():
     store_info = gg.get_place_info(keyword,
             __GOOGLE_KEY,store_name,language)
 
-    naver_info = naver.get_naver_info(store_name,gps_lat,gps_lon,__NAVER_ID,__NAVER_KEY,__NAVER_GEO_ID,__NAVER_GEO_KEY)
+    naver_info = naver.get_naver_info(store_name,gps_lat,gps_lon,__NAVER_ID,__NAVER_KEY,__NAVER_GEO_ID,__NAVER_GEO_KEY,language)
     if naver_info is not None:
         store_info['result']['types'].append(naver_info)
 

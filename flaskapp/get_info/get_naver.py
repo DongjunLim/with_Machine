@@ -2,7 +2,7 @@ import os
 import sys
 import urllib.request
 import json
-
+from flaskapp.translation import translate as t
 
 
 def set_url_info(keyword,naver_id, naver_key):
@@ -53,12 +53,13 @@ def get_detail_naver(url):
         return None
         
 
-def get_naver_info(store_name,gps_lat,gps_lon,n_id,n_key,geo_id,geo_key):
-	addr_url = set_address_url(gps_lat,gps_lon,geo_id,geo_key)
-	keyword = get_address(addr_url)
-	if(keyword==0):
-		return None
-	keyword += store_name
-	search_url = set_url_info(keyword,n_id,n_key)
-	info = get_detail_naver(search_url)
-	return info
+def get_naver_info(store_name,gps_lat,gps_lon,n_id,n_key,geo_id,geo_key,language):
+    addr_url = set_address_url(gps_lat,gps_lon,geo_id,geo_key)
+    keyword = get_address(addr_url)
+    if(keyword==0):
+    	return None
+    keyword += store_name
+    search_url = set_url_info(keyword,n_id,n_key)
+    info = get_detail_naver(search_url)
+    info = t.translate_language(info,language)
+    return info

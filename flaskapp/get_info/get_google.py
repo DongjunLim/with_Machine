@@ -1,6 +1,7 @@
 #from flaskapp import convert_keyword as ck
 import requests
 from flaskapp.get_info import csv_data as csv
+from flaskapp.translation import translate as t
 import json
 
 
@@ -51,6 +52,7 @@ def get_detail(api_key,place_id,name,language):
     csv_info = csv.csv_data(name).toJSON()
     detail_info.update(csv_info)
     #info = {key: value for (key, value) in (detail_info.items() + csv_info.items())}
+    
     return detail_info
 
 
@@ -77,5 +79,14 @@ def get_place_info(keyword,key,name,language):
                 "gps_lon":0}
 
     detail = get_detail(key,place_id,name,language)
+    for x in detail['result']['reviews']:
+        x['text'] = t.translate_language(x['text'],language)
+    for y in detail['result']['types']:
+        y = t.translate_language(y,language)
+        print(y)
+        
+
+
+    #t.translate_language(detail,language)
     return detail
 
