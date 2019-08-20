@@ -11,4 +11,4 @@ def get_address(api_key,lat,lng,country):
 #일반주소와 이름을 합쳐 검색키워드로 변환
 def get_keyword(name,lat,lng,api_key,country):
     address = get_address(api_key,lat,lng,country)
-    return address + " " + name
+    return name + " nearby " + address
