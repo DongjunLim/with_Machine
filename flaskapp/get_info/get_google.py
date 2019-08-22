@@ -5,10 +5,12 @@ from flaskapp.translation import translate as t
 import json
 
 
-def search_url(key, name):
+def search_url(key, name,lat,lon,visit_language):
     url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?"
     url += "key={:}&input={:s}&inputtype=textquery".format(key,name)
     url += "&fields=place_id"
+    url += "&language={:s}".format(visit_language)
+    url += "&locationbias=circle:200:{:},{:}".format(lat,lon)
     return url
 
 def nearbysearch_url(key,lat,lon,name):
@@ -30,9 +32,9 @@ def photo_url(key, photo_ref):
     return url
 
 
-def get_place_id(key,name):
+def get_place_id(key,name,lat,lon,visit_language):
 
-    response = requests.get(url=search_url(key,name))
+    response = requests.get(url=search_url(key,name,lat,lon,visit_language))
 
     place_info = response.json()
 
@@ -52,7 +54,7 @@ def get_detail(api_key,place_id,name,language):
     csv_info = csv.csv_data(name).toJSON()
     detail_info.update(csv_info)
     #info = {key: value for (key, value) in (detail_info.items() + csv_info.items())}
-    
+    print(detail_info)
     return detail_info
 
 
@@ -67,22 +69,23 @@ def get_photos(api_key,photos):
 
 
 
-def get_place_info(keyword,key,name,language):
+def get_place_info(keyword,key,name,user_language,lat,lon,visit_language):
 
 
-    place_id = get_place_id(key,keyword)
+    place_id = get_place_id(key,keyword,lat,lon,visit_language)
     
 
     if place_id is False:
+        print("Not Found")
         return {"store_name":"Not Found",
                 "gps_lat": 0,
                 "gps_lon":0}
 
-    detail = get_detail(key,place_id,name,language)
+    detail = get_detail(key,place_id,name,user_language)
     for x in detail['result']['reviews']:
-        x['text'] = t.translate_language(x['text'],language)
+        x['text'] = t.translate_language(x['text'],user_language)
     for y in detail['result']['types']:
-        y = t.translate_language(y,language)
+        y = t.translate_language(y,user_language)
         print(y)
         
 

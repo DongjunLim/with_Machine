@@ -22,21 +22,36 @@ def set_address_url(lat,lon,naver_id,naver_key):
 	return request
 
 def get_address(url):
-	response = urllib.request.urlopen(url)
-	rescode = response.getcode()
-	if(rescode==200):
-		response_body = response.read()
-		contents = json.loads(response_body.decode('utf-8'))
-		if(contents['status']['name']=='no results'):
-			return 0
-		addr =  contents['results'][0]['region']['area1']['name'] + " "
-		addr += contents['results'][0]['region']['area2']['name'] + " "
-		addr += contents['results'][0]['region']['area3']['name'] + " "
-		
+    addr = ""
+    response = urllib.request.urlopen(url)
+    
+    rescode = response.getcode()
+    
+    if(rescode==200):
+    
+        response_body = response.read()
+        
+        contents = json.loads(response_body.decode('utf-8'))
+        
+        if(contents['status']['name']=='no results'):
+        
+            return 0
+        del contents['results'][1]['region']['area0']
+        for x in contents['results'][1]['region']:
+            
+            addr += contents['results'][1]['region'][x]['name'] + " "
+        print(addr)
+        print(contents)
 
-		return addr
-	else:
-		return "ERROR" + rescode
+
+
+
+
+        return addr
+
+    else:
+
+        return "ERROR" + rescode
 
 
 
