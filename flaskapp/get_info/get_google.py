@@ -1,4 +1,4 @@
-from flaskapp import convert_keyword as ck
+import googlemaps
 import requests
 from flaskapp.get_info import csv_data as csv
 from flaskapp.translation import translate as t
@@ -10,12 +10,26 @@ class Google(object):
     __place_id = None
     def __init__(self,api_key):
         self.__key = api_key
+
+
+    def get_address(self,gps_lat,gps_lon,country):
+        gmaps = googlemaps.Client(key=self.__key)
+        address = gmaps.reverse_geocode((gps_lat,gps_lon),language=country)
+        formatted_address = address[0].get("formatted_address")
+        return formatted_address
+
+    def set_keyword(self,cdata):
+        name = cdata.get_name()
+        gps = cdata.get_gps()
+        language = cdata.get_visit_language()
+        address = self.get_address(gps['gps_lat'],gps['gps_lon'],language)
+        self.__keyword = name + " nearby " + address
        
-    def set_search_url(self,cdata,keyword):
+    def set_search_url(self,cdata):
         gps = cdata.get_gps()
 
         url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?"
-        url += "key={:}&input={:s}&inputtype=textquery".format(self.__key,keyword)
+        url += "key={:}&input={:s}&inputtype=textquery".format(self.__key,self.__keyword)
         url += "&fields=place_id"
         url += "&language={:s}".format(cdata.get_visit_language())
         url += "&locationbias=circle:200:{:},{:}".format(gps['gps_lat'],gps['gps_lon'])
@@ -42,9 +56,9 @@ class Google(object):
         return url
     '''
 
-    def get_place_id(self,cdata,keyword):
+    def get_place_id(self,cdata):
 
-        response = requests.get(url=self.set_search_url(cdata,keyword))
+        response = requests.get(url=self.set_search_url(cdata))
 
         place_info = response.json()
 
@@ -66,11 +80,7 @@ class Google(object):
         self.__store_info = store.Store(detail['result'])
         
 
-        '''
-        csv_info = csv.csv_data(cdata.get_name()).toJSON()
-        self.__store_info.update(csv_info)
-
-    
+    '''
     def get_photos(self,api_key,photos):
     
        #for x in photos:
@@ -79,9 +89,11 @@ class Google(object):
         print(response.content)
         return 0
     '''
-    def get_place_info(self,cdata,keyword):
+    def get_place_info(self,cdata):
 
-        place_id = self.get_place_id(cdata,keyword)
+        self.set_keyword(cdata)
+
+        place_id = self.get_place_id(cdata)
     
         if place_id is False:
             return {"store_name":"Not Found",

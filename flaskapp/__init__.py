@@ -3,8 +3,8 @@ sys.path.insert(0, '~/webapp/flaskapp/get_info')
 from flask import Flask
 from flask import request
 from .get_info import get_google as gg
-from .get_info import get_naver as naver
-from flaskapp import convert_keyword as ck
+from .get_info import get_naver as naveri
+from .get_info import csv_data as csv
 from flask_autoindex import AutoIndex
 from flaskapp.cdata import Cdata
 
@@ -48,17 +48,13 @@ def receive():
 
     google = gg.Google(__GOOGLE_KEY)
     req_json = request.json
-
-    store_name = req_json['store_name']
-    gps_lat = req_json['gps_lat']
-    gps_lon = req_json['gps_lon']
-    user_language = req_json['user_language']
-    visit_language = req_json['visit_language']
     
     data = Cdata(req_json['store_name'],req_json['gps_lat'],req_json['gps_lon'],req_json['user_language'],req_json['visit_language'])
-    keyword = ck.get_keyword(data,__GOOGLE_KEY)
     
-    store_info = google.get_place_info(data,keyword)
+    
+    store_info = google.get_place_info(data)
+    csv_info = csv.csv_data(data.get_name()).toJSON()
+    store_info.update(csv_info)
     '''
     naver_info = naver.get_naver_info(Cdata,__NAVER_ID,__NAVER_KEY,__NAVER_GEO_ID,__NAVER_GEO_KEY)
     
@@ -68,9 +64,9 @@ def receive():
     
     store_info = gg.get_place_info(keyword,
             __GOOGLE_KEY,store_name,user_language,gps_lat,gps_lon,visit_language)
-    '''
+    
     naver_info = naver.get_naver_info(store_name,gps_lat,gps_lon,__NAVER_ID,__NAVER_KEY,__NAVER_GEO_ID,__NAVER_GEO_KEY,user_language)
     if naver_info is not None:
         store_info['result']['types'].append(naver_info)
-
+    '''
     return store_info
