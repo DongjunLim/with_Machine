@@ -1,70 +1,58 @@
 class Store(object):
-    def __init__(self,name,address_components,
-	format_address,icon,rating,reviews,types):
-        self.__name = name
-        self.__address = address_components
-	self.__formatted_address = format_address
-        self.__rating = rating
-        self.__reviews = reviews
-        self.__types = types    
+    def __init__(self,sdata):
+        self.__place_id = sdata['place_id']
+        self.__name = sdata['name']
+        self.__address = sdata['address_components']
+        self.__formatted_address = sdata['formatted_address']
+        self.__rating = sdata['rating']
+        self.__price_level = sdata['price_level']
+        self.__reviews = sdata['reviews']
+        self.__types = sdata['types']
+        self.__phone = sdata['international_phone_number']
+        self.__photos = sdata['photos']
     def get_name(self):
         return self.__name
     def get_address(self):
         return self.__address
-    def get_icon(self):
-        return self.__icon
     def get_rating(self):
         return self.__rating
     def get_reviews(self):
         return self.__reviews
     def get_types(self):
         return self.__types
+    def get_info(self):
+        store_info = {
+                'place_id':self.__place_id,
+                'name':self.__name,
+                'address':self.__address,
+                'formatted_address':self.__formatted_address,
+                'rating':self.__rating,
+                'price_level':self.__price_level,
+                'reviews' :self.__reviews,
+                'types' :self.__types,
+                'phone' :self.__phone
+                }
+        print(store_info)
+        return store_info
 
-class Address(object):
-    def __init__(self,floor,street_number,route,locality,admin_area_lv_2,
-            admin_area_lv_1,country,postal_code):
-        self.__floor = floor
-        self.__street_number = street_number
-        self.__route = route
-        self.__locality = locality
-        self.__admin_area_lv_2 = admin_area_lv_2
-        self.__admin_area_lv_1 = admin_area_lv_1
-        self.__country = country
-        self.__postal_code = postal_code
 
-    def get_floor(self):
-        return self.__floor
-    def get_street_number(self):
-        return self.__street_number
-    def get_route(self):
-        return self.__route
-    def get_locality(self):
-        return self.__locality
-    def get_admin_area_lv_2(self):
-        return self.__admin_area_lv_2
-    def get_admin_area_lv_1(self):
-        return self.__admin_area_lv_1
-    def get_country(self):
-        return self.__country
-    def get_postal_code(self):
-	return self.__postal_code
+data = {
+        'place_id':'armada55',
+        'name': 'conhas',
+        'address_components' : 'yeonhee',
+        'formatted_address' : 'seogyo',
+        'rating' : 5.0,
+        'price_level' : 1.0,
+        'reviews' : {
+            'author_name' : 'dongjun',
+            'text' : 'Its good place',
+            },
+        'types' : 'cafe',
+        'international_phone_number' : '010-9120-7304',
+        'photos' : 'refer'
+        }
 
-class Review(object):
-    def __init__(self,name,lang,rela,txt,ti):
-        self.__author_name = name
-	self.__language = lang
-	self.__relative_time_description = rela
-        self.__text = txt
-        self.__time = ti
 
-    def get_author_name(self):
-        return self.__author_name
-    def get_language(self):
-	return language
-    def get_relative_time_description(self):
-        return self.__relative_time_description
-    def get_text(self):
-        return self.__text
-    def get_time(self):
-        return self.__time
+store = Store(data)
+store.get_info()
 
