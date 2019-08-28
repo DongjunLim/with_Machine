@@ -32,27 +32,5 @@ class Store(object):
                 'types' :self.__types,
                 'phone' :self.__phone
                 }
-        print(store_info)
         return store_info
-
-
-data = {
-        'place_id':'armada55',
-        'name': 'conhas',
-        'address_components' : 'yeonhee',
-        'formatted_address' : 'seogyo',
-        'rating' : 5.0,
-        'price_level' : 1.0,
-        'reviews' : {
-            'author_name' : 'dongjun',
-            'text' : 'Its good place',
-            },
-        'types' : 'cafe',
-        'international_phone_number' : '010-9120-7304',
-        'photos' : 'refer'
-        }
-
-
-store = Store(data)
-store.get_info()
 

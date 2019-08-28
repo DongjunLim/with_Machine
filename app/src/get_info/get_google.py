@@ -1,13 +1,13 @@
 import googlemaps
 import requests
-from flaskapp.get_info import csv_data as csv
-from flaskapp.translation import translate as t
-from flaskapp import store
+from app.src.translation import translate as t
+from app.src import store
 import json
 
 class Google(object):
     __store_info = None
     __place_id = None
+
     def __init__(self,api_key):
         self.__key = api_key
 

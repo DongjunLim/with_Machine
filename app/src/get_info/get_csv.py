@@ -22,8 +22,8 @@ class csv_data:
         return matrixAr
 
     def __init__(self, name):
-        data_frame = pd.read_csv("/home/ubuntu/webapp/flaskapp/get_info/TA_restaurants_curated.csv", )
-        # Name 컬럼?�서 가�??�름??검??(data_row ?�??
+        data_frame = pd.read_csv("/home/ubuntu/server/app/src/get_info/TA_restaurants_curated.csv", )
+        # Name 컬럼??서 가?????름??검??(data_row ????
         value = data_frame.loc[data_frame['Name'].str.contains(name)]
 
        #self.city = value['City'].to_string(index=False)
@@ -35,11 +35,11 @@ class csv_data:
         # print("self.type = ", self.reviews[0])
         
 
-        # csv?�서 ?�정 ???�택 ?? �??�에???�요???�이?�만 추출
+        # csv??서 ??정 ????택 ?? ?????에????요????이??만 추출
 # result = csv_data()
 # print(result.toJSON())
 
-# ?�요??리뷰�?추출
+# ??요??리뷰???추출
 
 
 
