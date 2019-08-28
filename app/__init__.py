@@ -1,12 +1,15 @@
 import sys
-sys.path.insert(0, '~/server/app/src')
+sys.path.insert(0, './app/src/get_info')
+
 from flask import Flask
 from flask import request
-from .src.get_info import get_google as ggle
-from .src.get_info import get_naver as nvr
-from .src.get_info import get_csv as csv
-from .src.get_info import combine as cmb
 from flask_autoindex import AutoIndex
+
+from get_google import Google
+from get_naver import Naver
+from get_csv import csv_data
+from combine import combine
+
 from .src.cdata import Cdata
 
 
@@ -14,10 +17,10 @@ app = Flask(__name__)
 AutoIndex(app, browse_root='/home/ubuntu/client/')
 
 __google = None
-__naver = nvr.Naver()
+__naver = Naver()
 
 with open("../key/google_key.txt",mode='r') as f:
-    __google = ggle.Google(f.read())
+    __google = Google(f.read())
 with open("../key/naver_id.txt",mode='r') as f:
     __naver.set_id(f.read())
 with open("../key/naver_key.txt",mode='r') as f:
@@ -44,10 +47,10 @@ def receive():
     
     google_info = __google.get_place_info(data)
     
-    csv_info = csv.csv_data(data.get_name()).toJSON()
+    csv_info = csv_data(data.get_name()).toJSON()
     
     naver_info = __naver.get_naver_info(data)
     
-    store_info = cmb.combine(google_info,csv_info,naver_info)
+    store_info = combine(google_info,csv_info,naver_info)
     
     return store_info
