@@ -32,7 +32,8 @@ public class CameraActivity extends AppCompatActivity {
     private static final int CROP_FROM_CAMERA = 2;
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA};
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION};
     private static final int MULTIPLE_PERMISSIONS = 101;
     public static Uri photoUri;
     private final String TAG = CameraActivity.this.getClass().getSimpleName();
@@ -167,11 +168,11 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if (requestCode == PICK_FROM_CAMERA) {
+        } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
             // 갤러리에 나타나게
             MediaScannerConnection.scanFile(CameraActivity.this,

@@ -1,147 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:background="@drawable/language6">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_above="@+id/okButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="62dp"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LANGUAGE"
-                android:layout_marginBottom="50dp"
-                android:layout_gravity="center"
-                android:textSize="30dp"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="35dp"
+            android:orientation="vertical">
+
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/radioGroup">
+                android:layout_gravity="center">
 
                 <RadioButton
+                    android:id="@+id/korean"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="한국어"
-                    android:id="@+id/korean"/>
+                    android:text="한국어" />
+
                 <RadioButton
+                    android:id="@+id/english"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="English"
-                    android:id="@+id/english"/>
+                    android:text="English" />
+
                 <RadioButton
+                    android:id="@+id/chinese"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="中國語"
-                    android:id="@+id/chinese"/>
+                    android:text="中國語" />
+
                 <RadioButton
+                    android:id="@+id/japanese"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="日本語"
-                    android:id="@+id/japanese"/>
+                    android:text="日本語" />
+
                 <RadioButton
+                    android:id="@+id/franch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="français"
-                    android:id="@+id/franch"/>
+                    android:text="français" />
+
                 <RadioButton
+                    android:id="@+id/spanish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="español"
-                    android:id="@+id/spanish"/>
+                    android:text="español" />
+
                 <RadioButton
+                    android:id="@+id/vietnamese"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="tiếng Việt"
-                    android:id="@+id/vietnamese"/>
+                    android:text="tiếng Việt" />
+
                 <RadioButton
+                    android:id="@+id/german"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deutsch"
-                    android:id="@+id/german"/>
+                    android:text="Deutsch" />
             </RadioGroup>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginLeft="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="COUNTRY"
-                android:layout_marginBottom="50dp"
-                android:layout_gravity="center"
-                android:textSize="30dp"/>
+            android:layout_marginLeft="35dp"
+            android:orientation="vertical">
+
+
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:id="@+id/radioGroup2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/radioGroup2">
+                android:layout_gravity="center">
 
                 <RadioButton
+                    android:id="@+id/korea"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="한국"
-                    android:id="@+id/korea"/>
+                    android:text="한국" />
+
                 <RadioButton
+                    android:id="@+id/english_speaking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="English_speaking"
-                    android:id="@+id/english_speaking"/>
+                    android:text="English_speaking" />
+
                 <RadioButton
+                    android:id="@+id/china"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="中國"
-                    android:id="@+id/china"/>
+                    android:text="中國" />
+
                 <RadioButton
+                    android:id="@+id/japan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="日本"
-                    android:id="@+id/japan"/>
+                    android:text="日本" />
+
                 <RadioButton
+                    android:id="@+id/france"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="France"
-                    android:id="@+id/france"/>
+                    android:text="France" />
+
                 <RadioButton
+                    android:id="@+id/spain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="España"
-                    android:id="@+id/spain"/>
+                    android:text="España" />
+
                 <RadioButton
+                    android:id="@+id/vietnam"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Việt Nam"
-                    android:id="@+id/vietnam"/>
+                    android:text="Việt Nam" />
+
                 <RadioButton
+                    android:id="@+id/germany"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deutschland"
-                    android:id="@+id/germany"/>
+                    android:text="Deutschland" />
             </RadioGroup>
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        android:id="@+id/okButton"
-        android:layout_marginTop="50dp"
-        android:textSize="20dp"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/colornew"
+        android:text="SELECT"
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
+</RelativeLayout>

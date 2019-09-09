@@ -7,8 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import static com.cookandroid.storeapp.VisionServerActivity.place_id;
 
 public class ImageAdapter extends PagerAdapter {
     private int [] images={R.drawable.img2,R.drawable.img3,R.drawable.img4};
@@ -38,7 +42,10 @@ public class ImageAdapter extends PagerAdapter {
         ImageView imageView=(ImageView)v.findViewById(R.id.imageView);
         //TextView textView=(TextView)v.findViewById(R.id.textView);
 
-        imageView.setImageResource(images[position]);
+        String imageUrl="http://ec2-13-209-65-3.ap-northeast-2.compute.amazonaws.com/picture/";
+
+        Glide.with(this.context).load(imageUrl+place_id+"/0.jpg").into(imageView);
+        //imageView.setImageResource(images[position]);
 
         //String text=(position + 1) +"번째 이미지";
         //textView.setText(text);

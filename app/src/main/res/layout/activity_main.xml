@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,49 +16,102 @@
             class="androidx.viewpager.widget.ViewPager"
             android:id="@+id/view" />
         <TextView
-            android:layout_margin="3dp"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:id="@+id/name"/>
         <RatingBar
-            android:layout_margin="3dp"
+            android:layout_margin="10dp"
             android:id="@+id/rating"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:isIndicator="true"
             android:numStars="5"
-            android:rating="3.5"
             android:stepSize="0.5">
         </RatingBar>
-        <TextView
-            android:layout_margin="3dp"
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:textSize="15dp"
-            android:id="@+id/formatted_address"/>
-        <TextView
-            android:layout_margin="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
+            android:orientation="horizontal"></LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:textSize="15dp"
-            android:id="@+id/price_level"/>
-        <TextView
-            android:layout_margin="3dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <ImageView
+                android:gravity="center_vertical"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:background="@drawable/placeholder"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="18dp"
+                android:id="@+id/formatted_address"/>
+        </LinearLayout>
+        <LinearLayout
+
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:textSize="15dp"
-            android:id="@+id/phone"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:gravity="center_vertical"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:background="@drawable/coin"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="18dp"
+                android:id="@+id/price_level"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:background="@drawable/phone"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:gravity="center_vertical"
+                android:textSize="18dp"
+                android:layout_width="305dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:id="@+id/phone"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_margin="3dp"
+            android:layout_margin="10dp"
             android:hint="모든 리뷰"
             android:textSize="20dp"
             android:textStyle="bold" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -66,8 +119,8 @@
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
                 android:background="#d5d7d9"
                 android:textSize="15dp" />
         </ScrollView>
@@ -75,22 +128,33 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_margin="3dp"
+            android:layout_margin="10dp"
             android:text="연관매장"
             android:textSize="20dp"
             android:textStyle="bold" />
-        <TextView
-            android:id="@+id/text2"
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="3dp"
-            android:textAlignment="center"
-            android:background="#d5d7d9"
-            android:textSize="15dp" />
+            android:layout_height="350dp" >
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_weight="0.8"
+                tools:context=".MapsActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+            <ImageView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00ffffff"/>
+        </RelativeLayout>
+
         <Button
             android:layout_width="150px"
             android:layout_height="150px"
             android:id="@+id/backButton"
-            android:background="@drawable/ic_reply_black_24dp"/>
+            android:background="@drawable/backbutton"/>
     </LinearLayout>
 </ScrollView>
