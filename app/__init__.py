@@ -42,6 +42,8 @@ def receive():
     global __google,__naver
 
     req_json = request.json
+
+    print(req_json)
     
     data = Cdata(req_json['store_name'],req_json['gps_lat'],req_json['gps_lon'],req_json['user_language'],req_json['visit_language'])
     
@@ -54,3 +56,9 @@ def receive():
     store_info = combine(google_info,csv_info,naver_info)
     
     return store_info
+
+@app.teardown_appcontext
+def tesrdown_appcontext(exception):
+    #print("준???)
+    __google.save_photo()
+    #print("??료")

@@ -69,5 +69,5 @@ class Naver(object):
         keyword += cdata.get_name()
         search_url = self.get_url_info(keyword)
         info = self.get_detail_naver(search_url)
-        info = t.translate_language(info,cdata.get_user__language())
+        info = t.translate_language(info,cdata.get_user_language())
         return info
