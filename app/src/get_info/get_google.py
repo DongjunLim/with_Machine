@@ -90,19 +90,13 @@ class Google(object):
         response = requests.get(url=photo_url(photos))
         return response.url
 
-    def save_photo(self):
-        directory = '/home/ubuntu/client/picture/'+self.__place_id
-        try:
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-                for idx,photo in enumerate(self.__photo_ref):
-                    response = requests.get(url=self.photo_url(photo['photo_reference']))
-                    file_name = directory + "/{:s}.jpg".format(str(idx))
-                    urllib.request.urlretrieve(response.url,file_name)
-                    if idx >= 4:
-                        break
-        except OSError:
-            print('Error: Creating directory. ' + directory)
+    def save_photo(self,directory):
+        for idx,photo in enumerate(self.__photo_ref):
+            response = requests.get(url=self.photo_url(photo['photo_reference']))
+            file_name = directory + "/{:s}.jpg".format(str(idx))
+            urllib.request.urlretrieve(response.url,file_name)
+            if idx >= 4:
+                break
 
     def get_place_info(self,cdata):
 
