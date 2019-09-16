@@ -41,7 +41,8 @@ class Store(object):
         
         self.__types = types
                 
-
+    def get_id(self):
+        return self.__place_id
 
     def get_name(self):
         return self.__name

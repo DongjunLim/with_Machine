@@ -48,9 +48,7 @@ def helloworld():
 def receive():
 
 
-    global __google,__naver,__place_id,__store_info,__data
-
-    #db = DB(__mysql_user,__mysql_password)
+    global __google,__naver,__place_id,__store_info,__data,__mysql_user,__mysql_password
 
     req_json = request.json
 
@@ -66,27 +64,24 @@ def receive():
     
     __store_info = combine(google_info,csv_info,naver_info)
 
-    
+    pid = os.fork()
 
-    #db.set_store_query(store_info)
-    #db.insert_db()
-    
-    return __store_info
+    if pid == 0:
+        return __store_info
 
-@app.teardown_appcontext
-def tesrdown_appcontext(exception):
-    global __mysql_user,__mysql_password,__store_info,__data
 
-    directory = '../client/picture/'+__store_info['place_id']
-    db = DB(__mysql_user,__mysql_password,__data.get_user_language())
-    db.insert_store_table(__store_info)
-    db.insert_reviews_table(__store_info)
-    try:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            __google.save_photo(directory)
-            db.insert_types_table(__store_info)
-            print("End")
-    except OSError:
-        print('Error: Creating directory. ' + directory)
-    db.close_db()
+    else:
+        directory = '../client/picture/'+__store_info['place_id']
+        db = DB(__mysql_user,__mysql_password,__data.get_user_language())
+        db.insert_store_table(__store_info)
+        db.insert_reviews_table(__store_info)
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+                __google.save_photo(directory)
+                db.insert_types_table(__store_info)
+                print("End")
+        except OSError:
+            print('Error: Creating directory. ' + directory)
+        db.close_db()
+        return None

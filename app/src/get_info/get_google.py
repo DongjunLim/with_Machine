@@ -14,21 +14,23 @@ class Google(object):
     def __init__(self,api_key):
         self.__key = api_key
 
-
+    #gps좌표를 지번주소로 변경
     def get_address(self,gps_lat,gps_lon,country):
         gmaps = googlemaps.Client(key=self.__key)
         address = gmaps.reverse_geocode((gps_lat,gps_lon),language=country)
         formatted_address = address[0].get("formatted_address")
         print(formatted_address)
         return formatted_address
-
+    
+    #변경한 지번주소와 추출한 텍스트를 결합해 검색할 키워드 생성
     def set_keyword(self,cdata):
         name = cdata.get_name()
         gps = cdata.get_gps()
         language = cdata.get_visit_language()
         address = self.get_address(gps['gps_lat'],gps['gps_lon'],language)
         self.__keyword = name + " nearby " + address
-       
+    
+    #google places search api에 접근하기 위해 검색 url 생성
     def set_search_url(self,cdata):
         gps = cdata.get_gps()
 
@@ -45,7 +47,7 @@ class Google(object):
         url += "key={:s}&location={},{}&radius=150&language=ko&keyword={:s}".format(key,lat,lon,name)
         return url
     '''
-
+    #google places detail api에 접근하기 위해 검색 url 생성
     def set_detail_url(self,place_id,user_language):
         url = "https://maps.googleapis.com/maps/api/place/details/json?"
         url += "key={:s}&language={:s}&placeid={:s}".format(self.__key,user_language,place_id)
@@ -59,7 +61,7 @@ class Google(object):
         url+= "&maxwidth=300&maxheight=200"
         return url
     
-
+    #검색 url을 생성하고 google places search api에서 매장 id를 받아옴.
     def get_place_id(self,cdata):
 
         response = requests.get(url=self.set_search_url(cdata))
@@ -76,16 +78,17 @@ class Google(object):
         self.__place_id = candidate['place_id']
         return self.__place_id
 
+    #알아낸 매장 id를 이용해 google places detail api에 접근해 상세정보를 받아옴
     def get_detail(self,cdata,place_id):
         response = requests.get(url=self.set_detail_url(place_id,cdata.get_user_language()))
 
         detail = response.json()
+        print(detail)
 
         self.__store_info = store.Store(detail['result'])
         
-        #self.__photo = detail['result']
 
-    
+    #매장사진url에 접근한 후 매장 사진을 서버에 저장
     def get_photos(self,photos):
         response = requests.get(url=photo_url(photos))
         return response.url
@@ -114,11 +117,8 @@ class Google(object):
 
         result = self.__store_info.get_info()
         self.__photo_ref = self.__store_info.get_photo()
-
-
-
-               
-
+            
+        #가공한 매장정보에서 리뷰와 타입정보를 번역하여 저장
         for x in result['reviews']:
             x['text'] = t.translate_language(x['text'],cdata.get_user_language())
         for y in result['types']:

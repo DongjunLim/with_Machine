@@ -47,7 +47,8 @@ class Naver(object):
             return addr
         else:
             return "ERROR" + rescode
-
+    
+    #국내매장정보일경우 네이버 open api를 사용해 매장타입에 대한 정보를 추가
     def get_detail_naver(self,url):
         response = urllib.request.urlopen(url)
         rescode = response.getcode()
