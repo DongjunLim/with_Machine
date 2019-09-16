@@ -9,7 +9,7 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/backgroundlayout">
-        ​
+
         <view
             android:layout_width="wrap_content"
             android:layout_height="150dp"
@@ -33,14 +33,22 @@
             android:stepSize="0.5">
         </RatingBar>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/layout"
+        <HorizontalScrollView
+            android:id="@+id/scrollView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:paddingLeft="50px"
             android:paddingRight="50px"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_height="wrap_content">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"></LinearLayout>
+        </HorizontalScrollView>
+
+
 
 
         <LinearLayout
@@ -152,6 +160,7 @@
         </RelativeLayout>
 
         <Button
+            android:layout_marginRight="10dp"
             android:layout_width="150px"
             android:layout_height="150px"
             android:id="@+id/backButton"

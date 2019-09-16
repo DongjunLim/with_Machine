@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="스토어서치_origin"
+        android:label="스토어서치"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -26,7 +26,7 @@
             android:value="AIzaSyAdbhP2ed5Yk-GvcsAGJnQ8ag7mGpmAKyU" />
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:label="스토어서치_origin">
+            android:label="스토어서치">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

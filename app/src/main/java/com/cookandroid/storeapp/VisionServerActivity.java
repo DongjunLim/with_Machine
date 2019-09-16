@@ -77,7 +77,6 @@ public class VisionServerActivity extends AppCompatActivity {
         gifView = (ImageView)findViewById(R.id.gifView);
         Glide.with(this).load(R.drawable.giphy).into(gifView);
 
-
         try {
             if ( Build.VERSION.SDK_INT >= 23 &&
                     ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -322,7 +321,6 @@ public class VisionServerActivity extends AppCompatActivity {
 
         {
 
-
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -337,7 +335,6 @@ public class VisionServerActivity extends AppCompatActivity {
                     return null;
                 }
             }
-
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);

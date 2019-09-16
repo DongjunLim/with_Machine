@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -79,6 +80,7 @@ public class InfoActivity extends AppCompatActivity
     LinearLayout layout1;
     Button backButton;
     ScrollView scrollView1, scrollView2;
+    HorizontalScrollView scrollView3;
     TextView name, formatted_address, price_level, tv1, text1, phone;
     RatingBar rating;
     ImageView mapView;
@@ -121,7 +123,12 @@ public class InfoActivity extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        viewPager = (ViewPager) findViewById(R.id.view);
+        adapter = new ImageAdapter(this);
+        viewPager.setAdapter(adapter);
+
         initView();
         String storeName, address, phoneNum, authorName, text, types;
         Double price, ratingBar;
@@ -133,12 +140,32 @@ public class InfoActivity extends AppCompatActivity
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     scrollView1.requestDisallowInterceptTouchEvent(false);
+                    scrollView3.requestDisallowInterceptTouchEvent(false);
+
                 } else {
                     scrollView1.requestDisallowInterceptTouchEvent(true);
+                    scrollView3.requestDisallowInterceptTouchEvent(true);
+
                 }
                 return false;
             }
         });
+        scrollView3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    scrollView1.requestDisallowInterceptTouchEvent(false);
+                    scrollView2.requestDisallowInterceptTouchEvent(false);
+
+                } else {
+                    scrollView1.requestDisallowInterceptTouchEvent(true);
+                    scrollView2.requestDisallowInterceptTouchEvent(false);
+
+                }
+                return false;
+            }
+        });
+
 
         mapView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -152,37 +179,6 @@ public class InfoActivity extends AppCompatActivity
             }
         });
 
-
-        storeName = intent.getExtras().getString("name"); /*String형*/
-        address = intent.getExtras().getString("address"); /*String형*/
-        price = intent.getExtras().getDouble("price"); /*String형*/
-        ratingBar = intent.getExtras().getDouble("ratingBar"); /*String형*/
-        phoneNum = intent.getExtras().getString("phoneNum"); /*String형*/
-        types = intent.getExtras().getString("types").replace("[", "").replace("]", "");
-        strAddress = address;
-        name.setText(storeName);
-        formatted_address.setText(address);
-        price_level.setText(price.toString());
-        rating.setRating(Float.parseFloat(ratingBar.toString()));
-        phone.setText(phoneNum);
-        for (int i = 0; i < 5; i++) {
-            authorName = intent.getExtras().getString("authorName" + i); /*String형*/
-            text = intent.getExtras().getString("text" + i); /*String형*/
-            text1.setText(text1.getText() + authorName + ":\n" + text + "\n\n");
-        }
-
-        container = (LinearLayout) findViewById(R.id.layout);
-        String str = types;
-        StringTokenizer st = new StringTokenizer(str, ",\"");
-
-        int i = 0;
-        while (st.hasMoreTokens()){
-            textview(st.nextToken());
-            blank();
-            i= i+2;
-        }
-        container.removeViewAt(i-1);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -191,7 +187,6 @@ public class InfoActivity extends AppCompatActivity
         mLayout = findViewById(R.id.backgroundlayout);
 
         photoPosition = new LatLng(intent.getExtras().getDouble("latitude"), intent.getExtras().getDouble("longitude"));
-
 
         locationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -211,6 +206,43 @@ public class InfoActivity extends AppCompatActivity
 
         mapFragment.getMapAsync(this);
 
+        storeName = intent.getExtras().getString("name"); /*String형*/
+        address = intent.getExtras().getString("address"); /*String형*/
+        price = intent.getExtras().getDouble("price"); /*String형*/
+        ratingBar = intent.getExtras().getDouble("ratingBar"); /*String형*/
+        phoneNum = intent.getExtras().getString("phoneNum"); /*String형*/
+        types = intent.getExtras().getString("types").replace("[", "").replace("]", "");
+        strAddress = address;
+        int dollar_price=(int)(price*10);
+        name.setText(storeName);
+        formatted_address.setText(address);
+        price_level.setText(Integer.toString(dollar_price));
+        rating.setRating(Float.parseFloat(ratingBar.toString()));
+        phone.setText(phoneNum);
+        for (int i = 0; i < 5; i++) {
+            authorName = intent.getExtras().getString("authorName" + i); /*String형*/
+            text = intent.getExtras().getString("text" + i); /*String형*/
+            text1.setText(text1.getText() + authorName + ":\n" + text + "\n\n");
+        }
+
+        container = (LinearLayout) findViewById(R.id.layout);
+        blank();
+        blank();
+        blank();
+
+        String str = types;
+        StringTokenizer st = new StringTokenizer(str, ",\"");
+
+
+        int i = 0;
+        while (st.hasMoreTokens()){
+            textview(st.nextToken());
+            blank();
+            i= i+2;
+        }
+        container.removeViewAt(i-1);
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,13 +252,11 @@ public class InfoActivity extends AppCompatActivity
     }
 
     public void initView() {
-        viewPager = (ViewPager) findViewById(R.id.view);
-        adapter = new ImageAdapter(this);
-        viewPager.setAdapter(adapter);
         layout1 = (LinearLayout) findViewById(R.id.backgroundlayout);
         backButton = (Button) findViewById(R.id.backButton);
         scrollView1 = (ScrollView) findViewById(R.id.scrollView1);
         scrollView2 = (ScrollView) findViewById(R.id.scrollView2);
+        scrollView3 = (HorizontalScrollView) findViewById(R.id.scrollView3);
 
         tv1 = (TextView) findViewById(R.id.text1);
         name = (TextView) findViewById(R.id.name);
@@ -292,8 +322,6 @@ public class InfoActivity extends AppCompatActivity
 
         mMap = googleMap;
 
-        //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
-        //지도의 초기위치를 현재 매장의 위치로
         getPhotoLocation(strAddress);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(photoPosition, 17);
         mMap.moveCamera(cameraUpdate);
@@ -419,9 +447,12 @@ public class InfoActivity extends AppCompatActivity
                 mCurrentLocatiion = location;
             }
 
+
         }
 
     };
+
+
 
     private void startLocationUpdates() {
 
@@ -435,6 +466,7 @@ public class InfoActivity extends AppCompatActivity
                     Manifest.permission.ACCESS_FINE_LOCATION);
             int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
+
 
 
             if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
@@ -693,6 +725,7 @@ public class InfoActivity extends AppCompatActivity
 
             boolean check_result = true;
 
+
             // 모든 퍼미션을 허용했는지 체크합니다.
 
             for (int result : grandResults) {
@@ -786,7 +819,6 @@ public class InfoActivity extends AppCompatActivity
 
                         Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
 
-
                         needRequest = true;
 
                         return;
@@ -854,7 +886,7 @@ public class InfoActivity extends AppCompatActivity
                 .listener(InfoActivity.this)
                 .key("AIzaSyDQv2USeAIZQ0E4Jc6wz7q1wTG8z6uKkFE")
                 .latlng(location.latitude, location.longitude)//매개변수로 전달받은 위치
-                .radius(500) //500 미터 내에서 검색
+                .radius(250) //250 미터 내에서 검색
                 .type(PlaceType.RESTAURANT) //음식점 이거 지우면 모든 타입의 장소검색
                 .build()
                 .execute();

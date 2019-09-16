@@ -15,17 +15,13 @@ import androidx.viewpager.widget.PagerAdapter;
 import static com.cookandroid.storeapp.VisionServerActivity.place_id;
 
 public class ImageAdapter extends PagerAdapter {
-    private int [] images={R.drawable.img2,R.drawable.img3,R.drawable.img4};
+    static int page_count=1;
+    private int [] images={};
     private LayoutInflater inflater;
     private Context context;
 
     public ImageAdapter(Context context){
         this.context=context;
-    }
-
-    @Override
-    public int getCount() {
-        return images.length;
     }
 
     @Override
@@ -40,21 +36,33 @@ public class ImageAdapter extends PagerAdapter {
                 (Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.slider, container, false);
         ImageView imageView=(ImageView)v.findViewById(R.id.imageView);
-        //TextView textView=(TextView)v.findViewById(R.id.textView);
-
         String imageUrl="http://ec2-13-209-65-3.ap-northeast-2.compute.amazonaws.com/picture/";
+        String final_imageUrl=imageUrl+place_id+"/"+position+".jpg";
+        Glide.with(this.context).load(final_imageUrl).into(imageView);
+        if(final_imageUrl.equals("")){
+            imageView.setImageResource(R.drawable.img3);
 
-        Glide.with(this.context).load(imageUrl+place_id+"/0.jpg").into(imageView);
-        //imageView.setImageResource(images[position]);
+            System.out.println("뒷사진없음 "+final_imageUrl);
+        }
 
-        //String text=(position + 1) +"번째 이미지";
-        //textView.setText(text);
+
         container.addView(v);
+
+        System.out.println("페이지 개수 : "+page_count);
+
+
         return  v;
+
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.invalidate();
     }
+
+    @Override
+    public int getCount() {
+        return 5;
+    }
+
 }
