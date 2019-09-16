@@ -68,7 +68,6 @@ public class CameraActivity extends AppCompatActivity {
         try {
             photoFile = createImageFile();
         } catch (IOException e) {
-            Toast.makeText(CameraActivity.this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
             e.printStackTrace();
         }
@@ -174,7 +173,6 @@ public class CameraActivity extends AppCompatActivity {
             return;
         } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
-            // 갤러리에 나타나게
             MediaScannerConnection.scanFile(CameraActivity.this,
                     new String[]{photoUri.getPath()}, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
@@ -183,11 +181,10 @@ public class CameraActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             uploadImage(photoUri);
-            //imgMain.setImageURI(null);
-            //imgMain.setImageURI(photoUri);
             revokeUriPermission(photoUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
     }
+
     public void uploadImage(Uri uri) {
         if (uri != null) {
             Intent intent = new Intent(getApplicationContext(), VisionServerActivity.class);
