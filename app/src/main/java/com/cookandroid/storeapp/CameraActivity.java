@@ -137,7 +137,6 @@ public class CameraActivity extends AppCompatActivity {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
             intent.putExtra("crop", "true");
             intent.putExtra("aspectX", 2);
             intent.putExtra("aspectY", 1);

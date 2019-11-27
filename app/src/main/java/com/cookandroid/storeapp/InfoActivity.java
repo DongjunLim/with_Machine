@@ -1,6 +1,7 @@
 package com.cookandroid.storeapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -77,8 +79,8 @@ public class InfoActivity extends AppCompatActivity
         PlacesListener {
     ImageAdapter adapter;
     ViewPager viewPager;
-    LinearLayout layout1;
-    Button backButton;
+    LinearLayout layout1, addresslayout, pricelayout, phonelayout;
+    Button backButton, phoneButton;
     ScrollView scrollView1, scrollView2;
     HorizontalScrollView scrollView3;
     TextView name, formatted_address, price_level, tv1, text1, phone;
@@ -87,7 +89,6 @@ public class InfoActivity extends AppCompatActivity
     String strAddress;
 
     private GoogleMap mMap = null;
-    private Marker currentMarker = null;    //이거 필요없을거고
     private Marker photoMarker = null;  //사진찍은곳 마커
     private String lang, country;
 
@@ -96,6 +97,7 @@ public class InfoActivity extends AppCompatActivity
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
     private String TYPES = "restaurant";
+    public static Context iContext;
 
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
@@ -124,6 +126,7 @@ public class InfoActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        iContext = this;
         setContentView(R.layout.activity_main);
         viewPager = (ViewPager) findViewById(R.id.view);
         adapter = new ImageAdapter(this);
@@ -132,6 +135,7 @@ public class InfoActivity extends AppCompatActivity
         initView();
         String storeName, address, phoneNum, authorName, text, types;
         Double price, ratingBar;
+        int len;
 
         Intent intent = getIntent(); /*데이터 수신*/
 
@@ -165,7 +169,6 @@ public class InfoActivity extends AppCompatActivity
                 return false;
             }
         });
-
 
         mapView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -212,36 +215,82 @@ public class InfoActivity extends AppCompatActivity
         ratingBar = intent.getExtras().getDouble("ratingBar"); /*String형*/
         phoneNum = intent.getExtras().getString("phoneNum"); /*String형*/
         types = intent.getExtras().getString("types").replace("[", "").replace("]", "");
+        len = intent.getExtras().getInt("length");
+
         strAddress = address;
-        int dollar_price=(int)(price*10);
-        name.setText(storeName);
-        formatted_address.setText(address);
-        price_level.setText(Integer.toString(dollar_price));
-        rating.setRating(Float.parseFloat(ratingBar.toString()));
-        phone.setText(phoneNum);
-        for (int i = 0; i < 5; i++) {
-            authorName = intent.getExtras().getString("authorName" + i); /*String형*/
-            text = intent.getExtras().getString("text" + i); /*String형*/
-            text1.setText(text1.getText() + authorName + ":\n" + text + "\n\n");
+
+        // 매장이름
+        if(storeName.equals("Not Found"))
+            name.setVisibility(name.GONE);
+        else
+            name.setText(storeName);
+
+        // 주소
+        if(address.equals("Not Found"))
+            addresslayout.setVisibility(addresslayout.GONE);
+        else
+            formatted_address.setText(address);
+
+        // 가격대
+        if(price == 0.0)
+            pricelayout.setVisibility(pricelayout.GONE);
+        else {
+            int dollar_price=(int)(price*10);
+            price_level.setText(Integer.toString(dollar_price));
+        }
+
+        // 별점
+        if(ratingBar == 0.0)
+            rating.setVisibility(rating.GONE);
+        else
+            rating.setRating(Float.parseFloat(ratingBar.toString()));
+
+        // 번호
+        if(phoneNum.equals("Not Found"))
+            phonelayout.setVisibility(phonelayout.GONE);
+        else
+            phone.setText(phoneNum+"   ");
+
+        // 리뷰
+        if(len == 0) {
+            text1.setVisibility(text1.GONE);
+        }
+        else {
+            for (int i = 0; i < len; i++) {
+                authorName = intent.getExtras().getString("authorName" + i); /*String형*/
+                text = intent.getExtras().getString("text" + i); /*String형*/
+                text1.setText(text1.getText() + authorName + ":\n" + text + "\n\n");
+            }
         }
 
         container = (LinearLayout) findViewById(R.id.layout);
-        blank();
-        blank();
-        blank();
 
         String str = types;
-        StringTokenizer st = new StringTokenizer(str, ",\"");
+        if(str.equals("Not Found"))
+            System.out.print("정보없음");
+        else {
+            StringTokenizer st = new StringTokenizer(str, ",\"");
 
-
-        int i = 0;
-        while (st.hasMoreTokens()){
-            textview(st.nextToken());
-            blank();
-            i= i+2;
+            int i = 0;
+            while (st.hasMoreTokens()){
+                textview(st.nextToken());
+                blank();
+            }
         }
-        container.removeViewAt(i-1);
 
+        phoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tel = (String) phone.getText();
+                tel.replace("-","");
+
+                try {
+                    startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:"+tel)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,7 +302,11 @@ public class InfoActivity extends AppCompatActivity
 
     public void initView() {
         layout1 = (LinearLayout) findViewById(R.id.backgroundlayout);
+        addresslayout = (LinearLayout) findViewById(R.id.addresslayout);
+        pricelayout = (LinearLayout) findViewById(R.id.pricelayout);
+        phonelayout = (LinearLayout) findViewById(R.id.phonelayout);
         backButton = (Button) findViewById(R.id.backButton);
+        phoneButton = (Button) findViewById(R.id.phoneButton);
         scrollView1 = (ScrollView) findViewById(R.id.scrollView1);
         scrollView2 = (ScrollView) findViewById(R.id.scrollView2);
         scrollView3 = (HorizontalScrollView) findViewById(R.id.scrollView3);
@@ -314,7 +367,6 @@ public class InfoActivity extends AppCompatActivity
 
         photoMarker = mMap.addMarker(markerOptions);
     }
-
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
@@ -411,7 +463,6 @@ public class InfoActivity extends AppCompatActivity
                         "\"gps_lon\"" + ":" + longitude +
                         "}";
                 System.out.print("서버에 전달되는 데이터 \n"+data);
-                //tv.setText("서버에 전달되는 데이터 \n"+data+"\n\n");
 
                 ((VisionServerActivity)VisionServerActivity.vContext).Submit(data);
             }

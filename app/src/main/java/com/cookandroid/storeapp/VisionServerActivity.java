@@ -84,6 +84,7 @@ public class VisionServerActivity extends AppCompatActivity {
                         0 );
             }
             else{
+
                 Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 String provider = location.getProvider();
                 longitude = location.getLongitude();
@@ -115,10 +116,8 @@ public class VisionServerActivity extends AppCompatActivity {
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
 
-            String provider = location.getProvider();
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            double altitude = location.getAltitude();
 
         }
 
@@ -209,7 +208,7 @@ public class VisionServerActivity extends AppCompatActivity {
                 "\"gps_lon\"" + ":" + longitude +
                 "}";
         System.out.print("서버에 전달되는 데이터 \n"+data);
-        //tv.setText("서버에 전달되는 데이터 \n"+data+"\n\n");
+
         Submit(data);
     }
 
@@ -248,6 +247,7 @@ public class VisionServerActivity extends AppCompatActivity {
     public void Submit(String data) {
         final String savedata = data;
         String URL = "http://ec2-13-209-65-3.ap-northeast-2.compute.amazonaws.com/data";
+        Toast.makeText(this, "Searching Now", Toast.LENGTH_LONG).show();
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -255,7 +255,6 @@ public class VisionServerActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 // json 파싱
-
                 try{
                     JSONObject object = new JSONObject(response);
                     String address= object.getString("formatted_address");
@@ -265,8 +264,6 @@ public class VisionServerActivity extends AppCompatActivity {
                     String phoneNum = object.getString("phone");
                     String types =  object.getString("types");
                     place_id = object.getString("place_id");
-
-                    System.out.println("place_id : "+place_id);
 
                     // result의 reviews 태그 안 내용들
                     String reviews = object.getString("reviews");
@@ -283,13 +280,21 @@ public class VisionServerActivity extends AppCompatActivity {
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
 
-                    for (int i=0; i< reviewArray.length(); i++) {
-                        JSONObject reviewObject = reviewArray.getJSONObject(i);
-                        String authorName = reviewObject.getString("author_name");
-                        String text = reviewObject.getString("text");
 
-                        intent.putExtra("authorName"+i, authorName);
-                        intent.putExtra("text"+i, text);
+                    if(reviewArray.equals("Not Found")) {
+                        intent.putExtra("length", 0);
+                    }
+                    else {
+                        for (int i=0; i< reviewArray.length(); i++) {
+                            JSONObject reviewObject = reviewArray.getJSONObject(i);
+                            String authorName = reviewObject.getString("author_name");
+                            String text = reviewObject.getString("text");
+                            int len = reviewArray.length();
+
+                            intent.putExtra("authorName"+i, authorName);
+                            intent.putExtra("text"+i, text);
+                            intent.putExtra("length", len);
+                        }
                     }
 
                     startActivity(intent);
@@ -299,10 +304,9 @@ public class VisionServerActivity extends AppCompatActivity {
 
 
                 } catch (JSONException e) {
-                    e.printStackTrace();//
-                    Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "No Info", Toast.LENGTH_LONG).show();
                     System.out.println("server error : " + response);
-
 
                 }
                 //Log.i("VOLLEY", response);

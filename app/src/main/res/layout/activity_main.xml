@@ -44,16 +44,14 @@
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:orientation="horizontal"></LinearLayout>
         </HorizontalScrollView>
-
-
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/addresslayout"
             android:layout_margin="5dp">
             <ImageView
                 android:gravity="center_vertical"
@@ -70,10 +68,11 @@
                 android:textSize="18dp"
                 android:id="@+id/formatted_address"/>
         </LinearLayout>
-        <LinearLayout
 
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/pricelayout"
             android:layout_margin="5dp">
 
             <ImageView
@@ -90,11 +89,12 @@
                 android:layout_height="40dp"
                 android:textSize="18dp"
                 android:id="@+id/price_level"/>
-
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/phonelayout"
             android:layout_margin="5dp">
             <ImageView
                 android:layout_gravity="center"
@@ -106,17 +106,34 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textSize="18dp"
-                android:layout_width="305dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:id="@+id/phone"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/phoneButton"
+                android:layout_width="67dp"
+                android:layout_height="31dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/callbutton"
+                android:text="CALL"
+                android:textColor="#ffffff"
+                android:textSize="13dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:hint="모든 리뷰"
+            android:text="모든 리뷰"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -127,11 +144,12 @@
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:background="#d5d7d9"
                 android:textSize="15dp" />
         </ScrollView>
+
 
         <TextView
             android:layout_width="match_parent"
