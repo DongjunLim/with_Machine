@@ -29,6 +29,12 @@
 
 <br/>
 <br/>
+## :computer: Service Flow
+![651ef1a4-80a5-410a-9e7e-fe9e15a9dae7](https://user-images.githubusercontent.com/40556417/78315435-ee7e7d80-7597-11ea-819c-89a1364196f6.jpg)
+
+
+<br/>
+<br/>
 
 ## :computer: Server Environment
 운영 OS: Ubuntu 16.04<br>
@@ -45,9 +51,4 @@
 <br/>
 <br/>
 
-## :computer: Service Flow
-![651ef1a4-80a5-410a-9e7e-fe9e15a9dae7](https://user-images.githubusercontent.com/40556417/78315435-ee7e7d80-7597-11ea-819c-89a1364196f6.jpg)
 
-
-<br/>
-<br/>
